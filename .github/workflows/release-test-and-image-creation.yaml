@@ -1,4 +1,4 @@
-name: Run Unit Test via Pytest for RELEASE and create artifacts
+name: Run Unit Test via Pytest for RELEASE and create artifacts and push to DockerHub
 
 on:
   pull_request:
@@ -45,4 +45,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: jryusuf/base-repo-python-3.12-fastapi:latest
+          tags: jryusuf/antisocial-linkedin:latest
