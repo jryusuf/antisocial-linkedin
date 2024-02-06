@@ -1,4 +1,4 @@
-name: Run Unit Test via Pytest for RELEASE and create artifacts
+name: Run Unit Test via Pytest for RELEASE and create artifacts and push to DockerHub
 
 on:
   pull_request:
