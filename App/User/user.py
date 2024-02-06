@@ -11,7 +11,7 @@ class UserBase(SQLModel):
     is_active: bool = Field(default=False)
 
 class User(UserBase, table=True):
-    id: Optional[int] = Field(primary_key=True, autoincrement=True)
+    id: Optional[int] = Field(primary_key=True)
 
 class UserCreate(UserBase):
     pass
