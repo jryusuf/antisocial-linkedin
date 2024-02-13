@@ -1,9 +1,8 @@
 import pytest
-from sqlmodel import Session
-from pydantic import ValidationError
+from sqlmodel import Session, select
 from antisocial_backend.tests.integration.fixtures import session_fixture,client_fixture
-from antisocial_backend.models.User import UserCreate, User, UserRead
-from antisocial_backend.dependencies.database.users import create_user_db,read_users_db,read_user_db
+from antisocial_backend.models.User import UserCreate, User, UserRead, UserUpdate
+from antisocial_backend.dependencies.database.users import create_user_db,read_users_db,read_user_db,delete_user_db,update_user_db
 
 def test_create_user_db_creates_user(session: Session):
     user = UserCreate(email_address="asd@asd.com",password="asdf")
@@ -85,3 +84,62 @@ def test_read_user_by_id_returns_none_when_user_not_found(session: Session):
     session.commit()
     user_db = read_user_db(session=session,user_id=2)
     assert user_db is None
+
+def test_delete_user_by_id_deletes_user(session: Session):
+    user = User(email_address="asd@asd.com",password="asdf")
+    session.add(user)
+    session.commit()
+    user_db = session.get(User,user.id)
+    assert user_db is not None
+    delete_user_db(session=session,user_id=user.id)
+    users = session.exec(select(User)).all()
+    assert len(users) == 0
+    
+
+def test_delete_user_by_id_returns_true_when_user_deleted(session: Session):
+    user = User(email_address="asd@asd.com",password="asdf")
+    session.add(user)
+    session.commit()
+    user_db = session.get(User,user.id)
+    assert user_db is not None
+    result = delete_user_db(session=session,user_id=user.id)
+    assert result == True
+
+def test_delete_user_by_id_returns_false_when_user_not_found(session: Session):
+    user = User(email_address="asd@asd.com",password="asdf")
+    session.add(user)
+    session.commit()
+    user_db = session.get(User,user.id)
+    assert user_db is not None
+    result = delete_user_db(session=session,user_id=2)
+    assert result == False
+
+def test_delete_user_by_id_raises_error_when_user_id_invalid(session: Session):
+    with pytest.raises(ValueError):
+        delete_user_db(session=session,user_id="a")
+
+def test_update_user_by_id_updates_user(session: Session):
+    user = User(email_address="asd@asd.com",password="asdf")
+    session.add(user)
+    session.commit()
+    user_db = session.get(User,user.id)
+    assert user_db is not None
+    new_user_info = UserUpdate(email_address="asd2@asd.com",password="asdf2", is_active=True)
+    update_user_db(session=session,user_id=user.id,user=new_user_info)
+    user_db = session.get(User,user.id)
+    assert user_db.email_address == new_user_info.email_address
+
+def test_update_user_by_id_returns_none_when_user_not_found(session: Session):
+    user = User(email_address="asd@asd.com",password="asdf")
+    session.add(user)
+    session.commit()
+    user_db = session.get(User,user.id)
+    assert user_db is not None
+    new_user_info = UserUpdate(email_address="asd2@asd.com",password="asdf2", is_active=True)
+    user_db = update_user_db(session=session,user_id=2,user=new_user_info)
+    assert user_db is None
+
+def test_update_user_by_id_raises_error_when_user_id_invalid(session: Session):
+    with pytest.raises(ValueError):
+        new_user_info = UserUpdate(email_address="asd@asd.com",password="asdf", is_active=True)
+        user_db = update_user_db(session=session,user_id="a",user=new_user_info)
