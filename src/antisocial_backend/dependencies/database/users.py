@@ -8,11 +8,7 @@ from sqlmodel import select
 
 
 #convert the password to a stronger hash
-def create_user_db(
-        *,
-        session: Session = Depends(get_session),
-        user: UserCreate
-)-> UserRead:
+def create_user_db(*,session: Session = Depends(get_session),user: UserCreate)-> UserRead:
     db_user = User.model_validate(user)
     db_user_exist = session.exec(select(User).where(User.email_address == db_user.email_address)).first()
     if db_user_exist:
@@ -21,3 +17,7 @@ def create_user_db(
     session.commit()
     session.refresh(db_user)
     return db_user
+
+
+def read_users_db(*,session: Session = Depends(get_session))-> list[UserRead]:
+    return session.exec(select(User)).all()

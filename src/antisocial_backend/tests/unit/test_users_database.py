@@ -3,7 +3,7 @@ from sqlmodel import Session
 from pydantic import ValidationError
 from antisocial_backend.tests.integration.fixtures import session_fixture,client_fixture
 from antisocial_backend.models.User import UserCreate, User, UserRead
-from antisocial_backend.dependencies.database.users import create_user_db
+from antisocial_backend.dependencies.database.users import create_user_db,read_users_db
 
 def test_create_user_db_creates_user(session: Session):
     user = UserCreate(email_address="asd@asd.com",password="asdf")
@@ -43,3 +43,21 @@ def test_create_user_db_raises_error_when_password_invalid(session: Session):
 def test_create_user_db_raises_error_when_password_and_email_invalid(session: Session):
     with pytest.raises(ValueError):
         user1 = UserCreate(email_address="asd",password="ad")
+
+def test_read_users_db_returns_zero_user_when_empty(session: Session):
+    users = read_users_db(session=session)
+    assert len(users) == 0
+
+def test_read_users_db_returns_one_user_when_one_exists(session: Session):
+    user = User(email_address="asd@asd.com",password="asdf")
+    session.add(user)
+    session.commit()
+    users = read_users_db(session=session)
+    assert len(users) == 1
+
+def test_read_users_db_returns_list_of_User(session: Session):
+    user = User(email_address="asd@asd.com",password="asdf")
+    session.add(user)
+    session.commit()
+    users = read_users_db(session=session)
+    assert isinstance(users[0],User)
