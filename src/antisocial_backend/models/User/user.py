@@ -18,6 +18,7 @@ class UserBase(SQLModel):
 class User(UserBase, table=True):
     id: int = Field(min_length=1,primary_key=True)
 
-
+class CreateUser(UserBase):
+    pass
 
     
