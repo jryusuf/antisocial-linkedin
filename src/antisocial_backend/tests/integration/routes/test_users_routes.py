@@ -1,9 +1,5 @@
-import pytest 
-from pytest import fixture
 from fastapi.testclient import TestClient
-from antisocial_backend.dependencies.dependencies import get_session
-from sqlmodel import Session,SQLModel,create_engine, StaticPool
-from sqlmodel.pool import StaticPool
+from sqlmodel import Session
 from antisocial_backend.tests.integration.fixtures import session_fixture,client_fixture
 from antisocial_backend.models.User import UserCreate, User, UserRead
 
