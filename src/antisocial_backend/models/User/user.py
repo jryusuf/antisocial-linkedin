@@ -6,7 +6,8 @@ from sqlalchemy.sql import func
 class UserBase(SQLModel):
     pass
 class User(UserBase, table=True):
-    email_address: EmailStr = Field(primary_key=True,sa_type=AutoString)
+    id: Optional[int] = Field(primary_key=True,default=None)
+    email_address: EmailStr = Field(sa_type=AutoString)
     password: str = ...
     created_at: datetime = datetime.now()
     updated_at: datetime = datetime.now()

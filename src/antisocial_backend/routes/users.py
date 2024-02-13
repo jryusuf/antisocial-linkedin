@@ -1,7 +1,8 @@
 from fastapi import APIRouter,HTTPException,Depends
 from antisocial_backend.dependencies.dependencies import get_token_header
-from antisocial_backend.models.User import UserCreate, User
+from antisocial_backend.models.User import UserCreate, User,UserRead
 from antisocial_backend.dependencies.dependencies import get_session, Session
+from sqlmodel import select
 
 router = APIRouter(
     prefix="/users",
@@ -10,13 +11,26 @@ router = APIRouter(
     responses={404: {"description": "Not found"}},
 )
 
-@router.get("/")
-async def read_users():
-    return [{"username": "Rick"}, {"username": "Morty"}]
+@router.get("/", response_model=list[UserRead])
+async def read_users(
+    *,
+    session:Session = Depends(get_session)
+):
+    users = session.exec(select(User)).all()
+    if not users:
+        raise HTTPException(status_code=404, detail="Users not found")
+    return users
 
-@router.get("/{user_id}")
-async def read_user(user_id: int):
-    return {"username": "Rick"}
+@router.get("/{user_id}" , response_model=UserRead)
+async def read_user(
+    *,
+    session:Session = Depends(get_session),
+    user_id: int):
+    user = session.get(User, user_id)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    return user
+    
 
 @router.post("/")
 async def create_user(
