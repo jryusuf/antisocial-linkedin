@@ -12,5 +12,7 @@ class UserBase(SQLModel):
     email_adress: EmailStr = ...
     password: str = ...
     is_active: Optional[bool] = False
+    created_at: Optional[datetime] = datetime.now()
+    
 
     
