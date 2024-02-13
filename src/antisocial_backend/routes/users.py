@@ -2,6 +2,8 @@ from fastapi import APIRouter,HTTPException,Depends
 from antisocial_backend.models.User import UserCreate, User,UserRead, UserUpdate
 from antisocial_backend.dependencies.dependencies import get_session, Session
 from antisocial_backend.dependencies.database.users import *
+
+
 router = APIRouter(
     prefix="/users",
     tags=["users"],
