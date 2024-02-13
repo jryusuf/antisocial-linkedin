@@ -69,7 +69,31 @@ def test_users_put_by_id_returns_404_when_user_is_not_found(client: TestClient):
     response = client.put("/users/1")
     assert response.status_code == 404
 
-def test_users_delete_by_id_returns_200(client: TestClient):    
+def test_users_put_by_id_returns_200_when_user_is_found(session: Session,client: TestClient):
+    user = User(email_address="asdf@asdf.com",password="asdf")
+    session.add(user)
+    session.commit()
+    response = client.put("/users/1",
+                           json={
+                               "email_address": "asdf2@asdf.com",
+                                "password": "asdf2",
+                                "is_active": True})
+
+    assert response.status_code == 200
+    assert session.get(User, user.id).email_address == "asdf2@asdf.com"
+    assert session.get(User, user.id).password == "asdf2"
+    assert session.get(User, user.id).is_active == True
+     
+
+def test_users_delete_by_id_returns_404_when_user_is_not_found(client: TestClient):    
+    response = client.delete("/users/1")
+    assert response.status_code == 404
+
+def test_users_delete_the_user_if_exits(session: Session,client: TestClient):
+    user = User(email_address="asd@asd.com",password="asdf")
+    session.add(user)
+    session.commit()
     response = client.delete("/users/1")
     assert response.status_code == 200
     assert response.json() == {"result": "user deleted"}
+    assert session.get(User, user.id) is None

@@ -22,3 +22,8 @@ class UserRead(UserBase):
     created_at: datetime
     updated_at: datetime
     is_active: bool
+
+class UserUpdate(UserBase):
+    email_address: Optional[EmailStr] = Field(sa_type=AutoString)
+    password: Optional[str] = Field(min_length=3)
+    is_active: Optional[bool]
