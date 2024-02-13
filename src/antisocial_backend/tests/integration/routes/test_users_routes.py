@@ -67,7 +67,9 @@ def test_users_post_returns_422_when_empty_password(client: TestClient):
 
 def test_users_put_by_id_returns_404_when_user_is_not_found(client: TestClient):
     response = client.put("/users/1",
-                          json={"email_address": "asd@asd.com","password": "asdf","is_active": True})
+                          json={"email_address": "asd@asd.com",
+                                "password": "asdf",
+                                "is_active": True})
     assert response.status_code == 404
 
 def test_users_put_by_id_returns_200_when_user_is_found(session: Session,client: TestClient):
