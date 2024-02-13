@@ -4,6 +4,7 @@ from antisocial_backend.tests.integration.fixtures import session_fixture,client
 from antisocial_backend.models.User import UserCreate, User, UserRead, UserUpdate
 from antisocial_backend.dependencies.database.users import create_user_db,read_users_db,read_user_db,delete_user_db,update_user_db
 
+
 def test_create_user_db_creates_user(session: Session):
     user = UserCreate(email_address="asd@asd.com",password="asdf")
     user = create_user_db(session=session,user=user)
