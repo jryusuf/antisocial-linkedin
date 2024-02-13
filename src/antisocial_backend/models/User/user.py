@@ -16,6 +16,8 @@ class UserBase(SQLModel):
     updated_at: Optional[datetime] = datetime.now()
 
 class User(UserBase, table=True):
-    id: Optional[int] = Field(primary_key=True)
+    id: int = Field(min_length=1,primary_key=True)
+
+
 
     

@@ -2,6 +2,7 @@ import pytest
 from pytest import fixture
 from antisocial_backend.models.User import UserBase,User
 from datetime import datetime
+from pydantic import ValidationError
 
 @pytest.fixture(name="userbase")
 def user_base():
@@ -42,3 +43,6 @@ def test_When_GivenUser_Then_User_IsInstanceOfUserBase(user: user):
 
 def test_When_GivenUser_Then_User_HasId(user: user):
     assert type(user.id) == int
+
+##todo: add more tests for user model id field
+    
