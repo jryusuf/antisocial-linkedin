@@ -21,10 +21,32 @@ def test_users_post_returns_200(client: TestClient):
     assert response.status_code == 200
     assert response.json() == {"result": "user created"}
 
+def test_users_post_returns_422_when_invalid_email(client: TestClient):
+    response = client.post("/users/",
+                           json={
+                               "email_address": "asdf",
+                                "password": "asdf"
+                                })
+    assert response.status_code == 422
+
+def test_users_post_returns_422_when_password_lenght_less_than_3(client: TestClient):
+    response = client.post("/users/",
+                           json={
+                               "email_address": "adsq@fad.com",
+                               "password": "ad"})
+    assert response.status_code == 422
+    
+def test_users_post_returns_422_when_empty_password(client: TestClient):
+    response = client.post("/users/",
+                           json={
+                               "email_address": "adq@fasdf.com"})
+    assert response.status_code == 422
+
 def test_users_get_by_id_returns_200(client: TestClient):
     response = client.get("/users/1")
     assert response.status_code == 200
     assert response.json() == {"username": "Rick"}
+
 
 def test_users_put_by_id_returns_200(client: TestClient):
     response = client.put("/users/1")

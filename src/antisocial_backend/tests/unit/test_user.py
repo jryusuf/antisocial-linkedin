@@ -19,5 +19,10 @@ def test_user_create_empty_password_raise_error():
 #todo add more validation tests
 
 def test_user_read_has_email_adress():
-    user = UserRead(email_address="adf@asdf.com")
+    user = UserRead(
+        email_address="adf@asdf.com",
+        created_at=datetime.now(),
+        updated_at=datetime.now(),
+        is_active=True)
+    
     assert user.email_address == "adf@asdf.com"
