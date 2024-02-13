@@ -21,3 +21,7 @@ def create_user_db(*,session: Session = Depends(get_session),user: UserCreate)->
 
 def read_users_db(*,session: Session = Depends(get_session))-> list[UserRead]:
     return session.exec(select(User)).all()
+
+def read_user_db(*,session: Session = Depends(get_session),user_id: int)-> UserRead:
+    user = session.get(User, user_id)
+    return user

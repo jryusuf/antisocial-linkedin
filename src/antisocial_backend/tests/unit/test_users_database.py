@@ -3,7 +3,7 @@ from sqlmodel import Session
 from pydantic import ValidationError
 from antisocial_backend.tests.integration.fixtures import session_fixture,client_fixture
 from antisocial_backend.models.User import UserCreate, User, UserRead
-from antisocial_backend.dependencies.database.users import create_user_db,read_users_db
+from antisocial_backend.dependencies.database.users import create_user_db,read_users_db,read_user_db
 
 def test_create_user_db_creates_user(session: Session):
     user = UserCreate(email_address="asd@asd.com",password="asdf")
@@ -70,3 +70,18 @@ def test_read_users_db_returns_two_users_when_two_exists(session: Session):
     session.commit()
     users = read_users_db(session=session)
     assert len(users) == 2
+
+def test_read_user_by_id_returns_user(session: Session):
+    user = User(email_address="asd@asd.com",password="asdf")
+    session.add(user)
+    session.commit()
+    user_db = read_user_db(session=session,user_id=user.id)
+    assert user_db is not None
+    assert user_db.email_address == user.email_address
+
+def test_read_user_by_id_returns_none_when_user_not_found(session: Session):
+    user = User(email_address="asd@asds.com",password="asdf")
+    session.add(user)
+    session.commit()
+    user_db = read_user_db(session=session,user_id=2)
+    assert user_db is None

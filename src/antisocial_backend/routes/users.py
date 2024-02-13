@@ -3,7 +3,7 @@ from antisocial_backend.dependencies.dependencies import get_token_header
 from antisocial_backend.models.User import UserCreate, User,UserRead, UserUpdate
 from antisocial_backend.dependencies.dependencies import get_session, Session
 from sqlmodel import select
-from antisocial_backend.dependencies.database.users import create_user_db,read_users_db
+from antisocial_backend.dependencies.database.users import create_user_db,read_users_db,read_user_db
 router = APIRouter(
     prefix="/users",
     tags=["users"],
@@ -20,7 +20,7 @@ async def read_users(*,session:Session = Depends(get_session)):
 
 @router.get("/{user_id}" , response_model=UserRead)
 async def read_user(*,session:Session = Depends(get_session),user_id: int):
-    user = session.get(User, user_id)
+    user = read_user_db(session=session, user_id=user_id)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     return user
