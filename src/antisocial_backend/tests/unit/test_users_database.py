@@ -2,7 +2,7 @@ import pytest
 from sqlmodel import Session, select
 from antisocial_backend.tests.integration.fixtures import session_fixture,client_fixture
 from antisocial_backend.models.User import UserCreate, User, UserRead, UserUpdate
-from antisocial_backend.dependencies.database.users import create_user_db,read_users_db,read_user_db,delete_user_db,update_user_db
+from antisocial_backend.dependencies.database.users import *
 
 
 def test_create_user_db_creates_user(session: Session):
