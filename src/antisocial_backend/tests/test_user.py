@@ -1,6 +1,6 @@
 import pytest
 from pytest import fixture
-from antisocial_backend.models.User import UserBase,User,CreateUser
+from antisocial_backend.models.User import UserBase,User,UserCreate
 from datetime import datetime
 from pydantic import ValidationError
 
@@ -48,5 +48,13 @@ def test_When_GivenUser_Then_User_HasId(user: user):
 
 ##This is model and the businss logic, check the input and model creation    
 def test_When_GivenUserCreate_Requires_Email_AddressAndPassword():
-    create_user = CreateUser(email_adress = "asdf@asdf.com", password = "1234")
+    create_user = UserCreate(email_adress = "asdf@asdf.com", password = "1234")
     assert create_user is not None
+
+def test_When_GivenUserCreate_WithoutEmail_Then_ValidationError():
+    with pytest.raises(ValidationError):
+        create_user = UserCreate(password = "1234")
+
+def test_When_Given_UserCreate_WithoutPassword_Then_ValidationError():
+    with pytest.raises(ValidationError):
+        create_user = UserCreate(email_adress = "asdf@asdf.com")
