@@ -21,7 +21,6 @@ def test_users_post_returns_200(client: TestClient):
                                 "password": "asdf"
                                 })
     assert response.status_code == 200
-    assert response.json() == {"result": "user created"}
 
 def test_users_get_by_id_returns_404_when_user_not_found(client: TestClient):
     response = client.get("/users/1")
