@@ -1,6 +1,6 @@
 import pytest
 from pytest import fixture
-from antisocial_backend.models.User import UserBase,User,UserCreate
+from antisocial_backend.models.User import UserBase,User,UserCreate,UserRead
 from datetime import datetime
 from pydantic import ValidationError
 
