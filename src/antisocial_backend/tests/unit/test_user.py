@@ -1,6 +1,6 @@
 import pytest
 from pytest import fixture
-from antisocial_backend.models.User import UserCreate
+from antisocial_backend.models.User import UserCreate, UserRead
 from datetime import datetime
 from pydantic import ValidationError
 
@@ -15,3 +15,9 @@ def test_user_create_invalid_email_raise_error():
 def test_user_create_empty_password_raise_error():
     with pytest.raises(ValidationError):
         user = UserCreate(email_address="asdf@adf.com")
+
+#todo add more validation tests
+
+def test_user_read_has_email_adress():
+    user = UserRead(email_address="adf@asdf.com")
+    assert user.email_address == "adf@asdf.com"

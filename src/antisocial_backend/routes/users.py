@@ -1,6 +1,6 @@
 from fastapi import APIRouter,HTTPException,Depends
 from antisocial_backend.dependencies.dependencies import get_token_header
-from antisocial_backend.models.User import UserCreate
+from antisocial_backend.models.User import UserCreate, User
 from antisocial_backend.dependencies.dependencies import get_session, Session
 
 router = APIRouter(
@@ -23,8 +23,8 @@ async def create_user(
     *, 
     session:Session = Depends(get_session),
     user: UserCreate):
-    
-    db_user = UserCreate.model_validate(user)
+
+    db_user = User.model_validate(user)
     session.add(db_user)
     session.commit()
     session.refresh(db_user)
