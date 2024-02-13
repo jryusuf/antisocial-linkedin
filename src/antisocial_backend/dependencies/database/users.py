@@ -5,6 +5,9 @@ from sqlmodel import select
 ## def method(input:type)->output:type:
 ##     pass
 
+
+
+#convert the password to a stronger hash
 def create_user_db(
         *,
         session: Session = Depends(get_session),
@@ -13,7 +16,7 @@ def create_user_db(
     db_user = User.model_validate(user)
     db_user_exist = session.exec(select(User).where(User.email_address == db_user.email_address)).first()
     if db_user_exist:
-        return None
+        raise ValueError("Email already exists")
     session.add(db_user)
     session.commit()
     session.refresh(db_user)
