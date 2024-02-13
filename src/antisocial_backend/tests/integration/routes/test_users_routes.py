@@ -95,3 +95,12 @@ def test_users_delete_the_user_if_exits(session: Session,client: TestClient):
     assert response.status_code == 200
     assert response.json() == {"result": "user deleted"}
     assert session.get(User, user.id) is None
+
+def test_users_create_user_with_existing_email_raises_error(session: Session,client: TestClient):
+    user = User(email_address="asdf@asdf.com",password="asdf")
+    session.add(user)
+    session.commit()
+    response = client.post("/users/",
+                           json={
+                               "email_address": "asdf@asdf.com","password": "asdfA1234"})
+    assert response.status_code == 422

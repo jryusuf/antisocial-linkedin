@@ -33,8 +33,7 @@ def test_create_user_db_returns_new_user_when_email_not_exists(session: Session)
 
 def test_create_user_db_raises_error_when_email_invalid(session: Session):
     with pytest.raises(ValueError):
-        user1 = UserCreate(email_address="asd",password="asdfA1234")
-        db_user1 = create_user_db(session=session,user=user1)
+        db_user1 = create_user_db(session=session,user=UserCreate(email_address="asd",password="asdfA1234"))
 
 def test_create_user_db_raises_error_when_password_invalid(session: Session):
     with pytest.raises(ValueError):

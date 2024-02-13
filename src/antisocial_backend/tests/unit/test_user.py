@@ -1,6 +1,6 @@
 import pytest
 from pytest import fixture
-from antisocial_backend.models.User import UserCreate, UserRead
+from antisocial_backend.models.User import UserCreate, UserRead,UserUpdate
 from datetime import datetime
 from pydantic import ValidationError
 
@@ -26,3 +26,35 @@ def test_user_read_has_email_adress():
         is_active=True)
     
     assert user.email_address == "adf@asdf.com"
+
+def test_user_create_raises_error_when_password_is_less_than_8_characters():
+    with pytest.raises(ValidationError):
+        user = UserCreate(email_address="asdf@asdf.com,password=asdfA1")
+
+def test_user_create_raises_error_when_password_does_not_contain_uppercase_letter():
+    with pytest.raises(ValidationError):
+        user = UserCreate(email_address="adf@asdf.com",password="asdf1234")
+
+def test_user_create_raises_error_when_password_does_not_contain_lowercase_letter():
+    with pytest.raises(ValidationError):
+        user = UserCreate(email_address="asd@af.com",password="ASDF1234")
+
+def test_user_create_raises_error_when_password_does_not_contain_number():
+    with pytest.raises(ValidationError):
+        user = UserCreate(email_address="asd@asd.com",password="ASDFasdf")
+
+def test_user_update_raises_error_when_password_is_less_than_8_characters():
+    with pytest.raises(ValidationError):
+        user = UserUpdate(email_address="asd@asd.com",password="asdfA1")
+
+def test_user_update_raises_error_when_password_does_not_contain_uppercase_letter():
+    with pytest.raises(ValidationError):
+        user = UserUpdate(email_address="asdf@asdf.com",password="asdf1234")
+    
+def test_user_update_raises_error_when_password_does_not_contain_lowercase_letter():
+    with pytest.raises(ValidationError):
+        user = UserUpdate(email_address="asd@asd.com",password="ASDF1234")
+
+def test_user_update_raises_error_when_password_does_not_contain_number():
+    with pytest.raises(ValidationError):
+        user = UserUpdate(email_address="ad@adf.com",password="ASDFasdf")
