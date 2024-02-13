@@ -1,0 +1,1 @@
+from antisocial_backend.middlewares.password import *

@@ -5,7 +5,7 @@ from datetime import datetime
 from pydantic import ValidationError
 
 def test_user_create():
-    user = UserCreate(email_address="asdf@asdf.com",password="asdf")
+    user = UserCreate(email_address="asdf@asdf.com",password="asdfA1234")
     assert user is not None
 
 def test_user_create_invalid_email_raise_error():
