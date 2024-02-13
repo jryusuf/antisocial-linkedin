@@ -61,3 +61,12 @@ def test_read_users_db_returns_list_of_User(session: Session):
     session.commit()
     users = read_users_db(session=session)
     assert isinstance(users[0],User)
+
+def test_read_users_db_returns_two_users_when_two_exists(session: Session):
+    user1 = User(email_address="asd@asd.com",password="asdf")
+    user2 = User(email_address="asdf@asdf.com",password="asdf")
+    session.add(user1)
+    session.add(user2)
+    session.commit()
+    users = read_users_db(session=session)
+    assert len(users) == 2
