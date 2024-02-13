@@ -1,10 +1,11 @@
 import pytest 
 from pytest import fixture
 from fastapi.testclient import TestClient
-from antisocial_backend.app.main import app, get_session
+from antisocial_backend.dependencies.dependencies import get_session
 from sqlmodel import Session,SQLModel,create_engine, StaticPool
 from sqlmodel.pool import StaticPool
 from antisocial_backend.tests.integration.fixtures import session_fixture,client_fixture
+from antisocial_backend.models.User import UserCreate
 
 def test_users_get_returns_200(client: TestClient):
     response = client.get("/users/")
@@ -12,7 +13,11 @@ def test_users_get_returns_200(client: TestClient):
     assert response.json() == [{"username": "Rick"}, {"username": "Morty"}]
 
 def test_users_post_returns_200(client: TestClient):
-    response = client.post("/users/")
+    response = client.post("/users/",
+                           json={
+                               "email_address": "asdf@asdf.com",
+                                "password": "asdf"
+                                })
     assert response.status_code == 200
     assert response.json() == {"result": "user created"}
 

@@ -1,7 +1,8 @@
 import pytest 
 from pytest import fixture
 from fastapi.testclient import TestClient
-from antisocial_backend.app.main import app, get_session
+from antisocial_backend.app.main import app
+from antisocial_backend.dependencies.dependencies import get_session
 from sqlmodel import Session,SQLModel,create_engine, StaticPool
 from sqlmodel.pool import StaticPool
 
