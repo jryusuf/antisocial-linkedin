@@ -17,7 +17,7 @@ class PersonCreate(PersonBase):
     pass
 
 class PersonRead(PersonBase):
-    pass
+    id: int
 
 class PersonUpdate(PersonBase):
     firstname: Optional[str] = None
