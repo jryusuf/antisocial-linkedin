@@ -14,9 +14,8 @@ def read_organizations_db(*, session: Session)-> list[OrganizationRead]:
     return session.exec(select(Organization)).all()
 
 def read_organization_db(*, session: Session, org_id: int)-> OrganizationRead:
-    org = session.get(Organization, org_id)
-    return org
-
+    return session.get(Organization, org_id)
+     
 def delete_organization_db(*, session: Session, org_id: int)-> bool:
     org_db = session.get(Organization, org_id)
     if not org_db:
