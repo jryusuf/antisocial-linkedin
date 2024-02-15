@@ -22,6 +22,7 @@ def delete_organization_db(*, session: Session, org_id: int)-> bool:
     if not org_db:
         return False
     session.delete(org_db)
+    session.commit()
     return True
 
 def update_organization_db(*, session: Session, org_id:int, org:OrganizationUpdate)-> OrganizationRead:
