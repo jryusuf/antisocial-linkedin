@@ -20,7 +20,10 @@ class EventRead(EventBase):
     id: int
 
 class EventUpdate(EventBase):
-    pass
+    type: Optional[str] = Field(..., min_length=3)
+    name: Optional[str] = Field(..., min_length=3)
+    description: Optional[str] = Field(..., min_length=3)
+    start_date: Optional[datetime] = None
 
 class EventDelete(EventBase):
     pass
