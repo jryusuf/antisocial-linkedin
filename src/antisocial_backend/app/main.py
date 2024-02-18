@@ -6,6 +6,7 @@ from antisocial_backend.routes import persons
 from antisocial_backend.routes import organizations
 from antisocial_backend.routes import events
 from antisocial_backend.dependencies.dependencies import create_db_and_tables
+from antisocial_backend.resources.notes.note_model import *
 
 app = FastAPI()
 
@@ -20,8 +21,11 @@ app = FastAPI(lifespan=app_lifespan)
 app.include_router(router=users.router)
 app.include_router(router=persons.router)
 app.include_router(router=organizations.router)
-app.include_router(router=events.router)
+#app.include_router(router=events.router)
 @app.get("/")
 async def read_root():
     return {"Hello": "World"}
 
+@app.get("/demo")
+async def demo():
+    return {"Hello": "World2"}

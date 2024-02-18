@@ -35,3 +35,4 @@ def update_event_db(*, session: Session, event_id: int, event: EventUpdate)-> Ev
     session.commit()
     session.refresh(event_db)
     return event_db
+    
